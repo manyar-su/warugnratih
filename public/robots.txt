@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://warung-ratih.vercel.app/sitemap.xml

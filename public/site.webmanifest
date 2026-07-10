@@ -1,0 +1,10 @@
+{
+  "name": "Warung Ratih",
+  "short_name": "Warung Ratih",
+  "description": "Website pemesanan seblak, snack, kopi, dan minuman Warung Ratih.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff8ef",
+  "theme_color": "#b3261e",
+  "icons": []
+}
