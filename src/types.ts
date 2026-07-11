@@ -47,6 +47,13 @@ export interface PromoPackage {
   items: string[];
 }
 
+export interface HomeFeaturedItem {
+  id: string;
+  title: string;
+  image: string;
+  linkedProductId?: string;
+}
+
 export interface Order {
   id: string;
   date: string;

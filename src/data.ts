@@ -1,4 +1,4 @@
-import { Product, Topping, PromoPackage } from './types';
+import { HomeFeaturedItem, Product, Topping, PromoPackage } from './types';
 import {
   basrengPedasImage,
   djarum76Image,
@@ -436,6 +436,33 @@ export const PROMO_PACKAGES: PromoPackage[] = [
     originalPrice: 28000,
     image: basrengPedasImage,
     items: ['2x Basreng Pedas', '2x Kopi Susu Tradisional']
+  }
+];
+
+export const HOME_FEATURED_DEFAULTS: HomeFeaturedItem[] = [
+  {
+    id: 'home_featured_1',
+    title: 'Seblak Ratih',
+    image: seblakRatihImage,
+    linkedProductId: 'p_seblak_ori',
+  },
+  {
+    id: 'home_featured_2',
+    title: 'Tahu Crispy',
+    image: tahuCrispyImage,
+    linkedProductId: 'p_snack_tahu_crispy',
+  },
+  {
+    id: 'home_featured_3',
+    title: 'Kwetiau Pangsit',
+    image: kwetiauPangsitImage,
+    linkedProductId: 'p_makanan_kwetiau_pangsit',
+  },
+  {
+    id: 'home_featured_4',
+    title: 'Pisang Keju',
+    image: pisangKejuImage,
+    linkedProductId: 'p_snack_pisang_keju',
   }
 ];
 

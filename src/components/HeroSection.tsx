@@ -2,20 +2,18 @@ import React from 'react';
 import { Play, MessageCircle, Zap, Coins, Store, Truck, CreditCard } from 'lucide-react';
 import { motion } from 'motion/react';
 import { STORE_INFO } from '../data';
+import { HomeFeaturedItem } from '../types';
 import {
-  kwetiauPangsitImage,
-  pisangKejuImage,
-  seblakRatihImage,
-  tahuCrispyImage,
   warungSeblakBackgroundImage,
 } from '../assets';
 
 interface HeroSectionProps {
+  homeFeaturedItems: HomeFeaturedItem[];
   onLihatMenu: () => void;
   onPesanSekarang: () => void;
 }
 
-export default function HeroSection({ onLihatMenu, onPesanSekarang }: HeroSectionProps) {
+export default function HeroSection({ homeFeaturedItems, onLihatMenu, onPesanSekarang }: HeroSectionProps) {
   const highlights = [
     { icon: Zap, text: 'Pesanan cepat diproses', color: 'text-amber-500 bg-amber-50' },
     { icon: Coins, text: 'Harga terjangkau', color: 'text-emerald-500 bg-emerald-50' },
@@ -138,57 +136,23 @@ export default function HeroSection({ onLihatMenu, onPesanSekarang }: HeroSectio
             className="lg:col-span-5 relative"
           >
             <div className="grid grid-cols-2 gap-3.5 sm:gap-4 aspect-square max-w-[450px] mx-auto lg:max-w-none">
-              <div className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300">
-                <img
-                  src={seblakRatihImage}
-                  alt="Seblak Ratih"
-                  className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
-                  Seblak Ratih
-                </span>
-              </div>
-
-              <div className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300">
-                <img
-                  src={tahuCrispyImage}
-                  alt="Tahu Crispy"
-                  className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
-                  Tahu Crispy
-                </span>
-              </div>
-
-              <div className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300">
-                <img
-                  src={kwetiauPangsitImage}
-                  alt="Kwetiau Pangsit"
-                  className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
-                  Kwetiau Pangsit
-                </span>
-              </div>
-
-              <div className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300">
-                <img
-                  src={pisangKejuImage}
-                  alt="Pisang Keju"
-                  className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
-                  Pisang Keju
-                </span>
-              </div>
+              {homeFeaturedItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                  <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
+                    {item.title}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-orange text-white rounded-full flex items-center justify-center font-display font-bold text-xs shadow-lg rotate-12 z-10 animate-bounce">

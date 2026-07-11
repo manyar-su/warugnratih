@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, ChevronRight, Phone, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 // Types
-import { Product, CartItem, Order, PromoPackage } from './types';
+import { Product, CartItem, HomeFeaturedItem, Order, PromoPackage } from './types';
 
 // Data
-import { INITIAL_PRODUCTS, PROMO_PACKAGES, STORE_INFO } from './data';
+import { HOME_FEATURED_DEFAULTS, INITIAL_PRODUCTS, PROMO_PACKAGES, STORE_INFO } from './data';
 
 // Reusable Components
 import Navbar from './components/Navbar';
@@ -29,8 +29,8 @@ import SeoHead from './components/SeoHead';
 
 export default function App() {
   const isAdminEnabled =
-    ((import.meta as ImportMeta & { env: Record<string, string | undefined> }).env.VITE_ENABLE_ADMIN_PANEL ?? 'false') ===
-    'true';
+    ((import.meta as ImportMeta & { env: Record<string, string | undefined> }).env.VITE_ENABLE_ADMIN_PANEL ?? 'true') !==
+    'false';
   // --- CORE STATE ---
   // Load products from localStorage or default to INITIAL_PRODUCTS
   const [products, setProducts] = useState<Product[]>(() => {
@@ -59,6 +59,15 @@ export default function App() {
       return saved ? JSON.parse(saved) : PROMO_PACKAGES;
     } catch {
       return PROMO_PACKAGES;
+    }
+  });
+
+  const [homeFeaturedItems, setHomeFeaturedItems] = useState<HomeFeaturedItem[]>(() => {
+    try {
+      const saved = localStorage.getItem('wr_home_featured');
+      return saved ? JSON.parse(saved) : HOME_FEATURED_DEFAULTS;
+    } catch {
+      return HOME_FEATURED_DEFAULTS;
     }
   });
 
@@ -128,6 +137,14 @@ export default function App() {
       console.warn('Failed to sync promos with localStorage:', e);
     }
   }, [promos]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('wr_home_featured', JSON.stringify(homeFeaturedItems));
+    } catch (e) {
+      console.warn('Failed to sync home featured items with localStorage:', e);
+    }
+  }, [homeFeaturedItems]);
 
   // Handle Hash/URL routing trigger
   useEffect(() => {
@@ -389,6 +406,10 @@ export default function App() {
     }
   };
 
+  const handleUpdateHomeFeaturedItems = (items: HomeFeaturedItem[]) => {
+    setHomeFeaturedItems(items);
+  };
+
   // --- DYNAMIC CATALOG FILTER ---
   // If activeTab is 'promo', we filter only categories belonging to Promo.
   const filteredProducts = products.filter((prod) => {
@@ -420,6 +441,7 @@ export default function App() {
             {/* 1. Landing Hero (Show only when active tab is Beranda) */}
             {activeTab === 'beranda' && (
               <HeroSection
+                homeFeaturedItems={homeFeaturedItems}
                 onLihatMenu={() => handleTabChange('menu')}
                 onPesanSekarang={() => handleTabChange('menu')}
               />
@@ -616,11 +638,13 @@ export default function App() {
           products={products}
           orders={orders}
           promos={promos}
+          homeFeaturedItems={homeFeaturedItems}
           onAddProduct={handleAdminAddProduct}
           onUpdateProduct={handleAdminUpdateProduct}
           onDeleteProduct={handleAdminDeleteProduct}
           onDeletePromo={handleAdminDeletePromo}
           onUpdateOrderStatus={handleAdminUpdateOrderStatus}
+          onUpdateHomeFeaturedItems={handleUpdateHomeFeaturedItems}
           onClose={() => setIsAdminOpen(false)}
         />
       )}
