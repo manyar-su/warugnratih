@@ -35,7 +35,7 @@ export default function Navbar({
         </span>
         <span className="mx-3">|</span>
         <span className="inline-flex items-center gap-2">
-          <MapPin className="w-3.5 h-3.5" /> Bandung, Jawa Barat (Bisa Pesan Antar)
+          <MapPin className="w-3.5 h-3.5" /> Tasikmalaya, Perum Kharisma (Bisa Pesan Antar)
         </span>
       </div>
 

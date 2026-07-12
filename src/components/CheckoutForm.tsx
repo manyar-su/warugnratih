@@ -257,7 +257,7 @@ export default function CheckoutForm({
                     id="checkout-address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Contoh: Perumahan Indah Blok C No. 12, Coblong, Bandung"
+                    placeholder="Contoh: Perum Kharisma Blok C No. 12, Mangunreja, Tasikmalaya"
                     className={`w-full h-20 bg-white border rounded-xl p-3 text-sm focus:outline-none transition-all resize-none ${
                       errors.address ? 'border-rose-300 focus:ring-1 focus:ring-rose-500' : 'border-brand-beige focus:ring-1 focus:ring-brand-red'
                     }`}

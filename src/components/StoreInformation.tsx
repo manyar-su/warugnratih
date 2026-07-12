@@ -126,7 +126,7 @@ export default function StoreInformation() {
               />
               <div className="absolute top-5 right-5 bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-lg border border-brand-beige shadow-sm flex items-center gap-1 pointer-events-none">
                 <span className="w-1.5 h-1.5 bg-brand-red rounded-full animate-ping" />
-                <span className="text-[10px] font-bold text-stone-800">Coblong, Bandung</span>
+                <span className="text-[10px] font-bold text-stone-800">Perum Kharisma, Tasikmalaya</span>
               </div>
             </div>
 
