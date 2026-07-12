@@ -32,6 +32,8 @@ export const COFFEE_SWEETNESS = [
   'Tambah gula'
 ];
 
+const LOCAL_ASSET_IMAGE_PREFIX = '/src/assets/images/';
+
 export const HERO_CONTENT_DEFAULTS: HeroContent = {
   eyebrow: 'Kuliner modern Tasikmalaya',
   priceBadge: 'Mulai 10RB',
@@ -55,7 +57,7 @@ export const HERO_CONTENT_DEFAULTS: HeroContent = {
   ],
 };
 
-export const INITIAL_PRODUCTS: Product[] = [
+const ALL_PRODUCTS: Product[] = [
   // --- SEBLAK ---
   {
     id: 'p_seblak_ori',
@@ -419,7 +421,11 @@ export const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
-export const PROMO_PACKAGES: PromoPackage[] = [
+export const INITIAL_PRODUCTS: Product[] = ALL_PRODUCTS.filter((product) =>
+  product.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX),
+);
+
+const ALL_PROMO_PACKAGES: PromoPackage[] = [
   {
     id: 'promo_1',
     name: 'Paket Hemat Ratih',
@@ -448,6 +454,16 @@ export const PROMO_PACKAGES: PromoPackage[] = [
     items: ['2x Basreng Pedas', '2x Kopi Susu Tradisional']
   }
 ];
+
+export const PROMO_PACKAGES: PromoPackage[] = ALL_PROMO_PACKAGES.filter((promo) =>
+  promo.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX),
+);
+
+export const sanitizeProducts = (products: Product[]): Product[] =>
+  products.filter((product) => product.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX));
+
+export const sanitizePromos = (promos: PromoPackage[]): PromoPackage[] =>
+  promos.filter((promo) => promo.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX));
 
 export const FAQ_ITEMS = [
   {

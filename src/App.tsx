@@ -6,7 +6,14 @@ import { ShoppingBag, ChevronRight, Phone, AlertTriangle, ShieldCheck } from 'lu
 import { HeroContent, Product, CartItem, Order, PromoPackage } from './types';
 
 // Data
-import { HERO_CONTENT_DEFAULTS, INITIAL_PRODUCTS, PROMO_PACKAGES, STORE_INFO } from './data';
+import {
+  HERO_CONTENT_DEFAULTS,
+  INITIAL_PRODUCTS,
+  PROMO_PACKAGES,
+  STORE_INFO,
+  sanitizeProducts,
+  sanitizePromos,
+} from './data';
 
 // Reusable Components
 import Navbar from './components/Navbar';
@@ -24,7 +31,6 @@ import PromoCard from './components/PromoCard';
 import StoreInformation from './components/StoreInformation';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
-import AdminPanel from './components/AdminPanel';
 
 export default function App() {
   // --- CORE STATE ---
@@ -32,7 +38,7 @@ export default function App() {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem('wr_products');
-      return saved ? JSON.parse(saved) : INITIAL_PRODUCTS;
+      return saved ? sanitizeProducts(JSON.parse(saved)) : INITIAL_PRODUCTS;
     } catch {
       return INITIAL_PRODUCTS;
     }
@@ -52,7 +58,7 @@ export default function App() {
   const [promos, setPromos] = useState<PromoPackage[]>(() => {
     try {
       const saved = localStorage.getItem('wr_promos');
-      return saved ? JSON.parse(saved) : PROMO_PACKAGES;
+      return saved ? sanitizePromos(JSON.parse(saved)) : PROMO_PACKAGES;
     } catch {
       return PROMO_PACKAGES;
     }
@@ -85,7 +91,6 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   // Focus Item Pointer
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -110,7 +115,7 @@ export default function App() {
   // Sync Products with local storage
   useEffect(() => {
     try {
-      localStorage.setItem('wr_products', JSON.stringify(products));
+      localStorage.setItem('wr_products', JSON.stringify(sanitizeProducts(products)));
     } catch (e) {
       console.warn('Failed to sync products with localStorage:', e);
     }
@@ -128,7 +133,7 @@ export default function App() {
   // Sync Promos with local storage
   useEffect(() => {
     try {
-      localStorage.setItem('wr_promos', JSON.stringify(promos));
+      localStorage.setItem('wr_promos', JSON.stringify(sanitizePromos(promos)));
     } catch (e) {
       console.warn('Failed to sync promos with localStorage:', e);
     }
@@ -162,8 +167,6 @@ export default function App() {
       } else if (hash === '#/menu') {
         setActiveTab('menu');
         setCurrentView('catalog');
-      } else if (hash === '#/admin') {
-        setIsAdminOpen(true);
       } else {
         // Default home
         setCurrentView('catalog');
@@ -378,34 +381,6 @@ export default function App() {
     }
   };
 
-  // --- ADMIN DATABASE OPERATIONS ---
-  const handleAdminAddProduct = (newProduct: Product) => {
-    setProducts([newProduct, ...products]);
-  };
-
-  const handleAdminUpdateProduct = (updated: Product) => {
-    setProducts(products.map((p) => (p.id === updated.id ? updated : p)));
-  };
-
-  const handleAdminDeleteProduct = (productId: string) => {
-    setProducts(products.filter((p) => p.id !== productId));
-  };
-
-  const handleAdminDeletePromo = (promoId: string) => {
-    setPromos(promos.filter((p) => p.id !== promoId));
-  };
-
-  const handleAdminAddPromo = (newPromo: PromoPackage) => {
-    setPromos([newPromo, ...promos]);
-  };
-
-  const handleAdminUpdateOrderStatus = (orderId: string, status: Order['status']) => {
-    setOrders(orders.map((o) => (o.id === orderId ? { ...o, status } : o)));
-    if (currentOrder && currentOrder.id === orderId) {
-      setCurrentOrder({ ...currentOrder, status });
-    }
-  };
-
   // --- DYNAMIC CATALOG FILTER ---
   // If activeTab is 'promo', we filter only categories belonging to Promo.
   const filteredProducts = products.filter((prod) => {
@@ -428,7 +403,6 @@ export default function App() {
         onCartClick={() => setIsCartOpen(true)}
         activeTab={activeTab}
         setActiveTab={handleTabChange}
-        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* VIEW ORCHESTRATOR */}
@@ -482,7 +456,6 @@ export default function App() {
                         key={promo.id}
                         promo={promo}
                         onAddPromoToCart={handleAddPromoToCart}
-                        onDelete={handleAdminDeletePromo}
                       />
                     ))
                   )}
@@ -633,24 +606,6 @@ export default function App() {
         }}
         onConfirm={handleAgeConfirmSuccess}
       />
-
-      {/* 4. Backdoor local administrative sandbox console */}
-      {isAdminOpen && (
-        <AdminPanel
-          heroContent={heroContent}
-          products={products}
-          orders={orders}
-          promos={promos}
-          onUpdateHeroContent={setHeroContent}
-          onAddProduct={handleAdminAddProduct}
-          onUpdateProduct={handleAdminUpdateProduct}
-          onDeleteProduct={handleAdminDeleteProduct}
-          onDeletePromo={handleAdminDeletePromo}
-          onAddPromo={handleAdminAddPromo}
-          onUpdateOrderStatus={handleAdminUpdateOrderStatus}
-          onClose={() => setIsAdminOpen(false)}
-        />
-      )}
 
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Phone, Clock, MapPin, Menu as MenuIcon, X, Settings } from 'lucide-react';
+import { ShoppingBag, Phone, Clock, MapPin, Menu as MenuIcon, X } from 'lucide-react';
 import { heroLogoImage } from '../assets';
 import { STORE_INFO } from '../data';
 
@@ -8,15 +8,13 @@ interface NavbarProps {
   onCartClick: () => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  onOpenAdmin: () => void;
 }
 
 export default function Navbar({
   cartCount,
   onCartClick,
   activeTab,
-  setActiveTab,
-  onOpenAdmin
+  setActiveTab
 }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
@@ -80,15 +78,6 @@ export default function Navbar({
               {item.label}
             </button>
           ))}
-          
-          <button
-            onClick={onOpenAdmin}
-            id="nav-admin-btn"
-            className="ml-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-stone-50 hover:bg-stone-100 border border-brand-beige hover:border-brand-orange text-stone-600 hover:text-brand-orange rounded-lg font-semibold transition-all cursor-pointer group"
-          >
-            <Settings className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform duration-300" />
-            <span>Pengaturan & Kelola Menu</span>
-          </button>
         </nav>
 
         {/* Cart and Action Buttons */}
@@ -155,16 +144,6 @@ export default function Navbar({
             </button>
           ))}
           <div className="pt-2 border-t border-brand-beige flex flex-col gap-2">
-            <button
-              onClick={() => {
-                onOpenAdmin();
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-brand-cream border border-brand-beige text-stone-750 font-semibold text-sm rounded-xl hover:bg-stone-50 transition-colors"
-            >
-              <Settings className="w-4 h-4 text-stone-500" />
-              <span>Pengaturan & Kelola Menu</span>
-            </button>
             <a
               href={`https://wa.me/${STORE_INFO.phone}`}
               target="_blank"
