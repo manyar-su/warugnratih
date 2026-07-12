@@ -56,7 +56,7 @@ export const HERO_CONTENT_DEFAULTS: HeroContent = {
   description: 'Nikmati seblak pedas, snack, kopi, minuman, dan kebutuhan warung lainnya. Pesan langsung dari HP, praktis tanpa antre.',
   primaryCtaLabel: 'Pesan Sekarang',
   secondaryCtaLabel: 'Lihat Menu',
-  heroImage: heroMainBowlImage,
+  heroImage: heroBackgroundImage,
   backgroundImage: heroBackgroundImage,
   stats: [
     { id: 'rating', value: '4.9', label: 'Rating toko', icon: 'star' },
