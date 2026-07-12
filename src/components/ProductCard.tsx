@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star, Plus, Eye, Lock } from 'lucide-react';
 import { Product } from '../types';
-import { motion } from 'motion/react';
+import { motion } from '../lib/motion';
 
 interface ProductCardProps {
   key?: React.Key;
@@ -58,13 +58,16 @@ export default function ProductCard({
       </div>
 
       {/* Image Gallery area */}
-      <div className={`relative overflow-hidden bg-stone-50 shrink-0 ${
-        product.layout === 'wide'
-          ? 'w-full md:w-[42%] aspect-4/3 md:aspect-auto'
-          : product.layout === 'tall'
-            ? 'aspect-[3/4] md:aspect-[3/4] flex-1'
-            : 'aspect-4/3'
-      }`}>
+      <div 
+        onClick={() => product.isAvailable && onViewDetail(product)}
+        className={`relative overflow-hidden bg-stone-50 shrink-0 cursor-pointer group-hover:brightness-95 transition-all duration-300 ${
+          product.layout === 'wide'
+            ? 'w-full md:w-[42%] aspect-4/3 md:aspect-auto'
+            : product.layout === 'tall'
+              ? 'aspect-[3/4] md:aspect-[3/4] flex-1'
+              : 'aspect-4/3'
+        }`}
+      >
         <img
           src={product.image}
           alt={product.name}

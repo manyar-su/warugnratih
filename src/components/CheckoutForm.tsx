@@ -242,7 +242,7 @@ export default function CheckoutForm({
                   >
                     {STORE_INFO.deliveryAreas.map((area, idx) => (
                       <option key={area.name} value={idx}>
-                        {area.name} - Biaya: {formatRupiah(area.fee)}
+                        {area.name} — Biaya: {formatRupiah(area.fee)}
                       </option>
                     ))}
                   </select>
@@ -257,7 +257,7 @@ export default function CheckoutForm({
                     id="checkout-address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Contoh: Karisma Residence Blok C No. 12, Margajaya, Mangunreja"
+                    placeholder="Contoh: Perumahan Indah Blok C No. 12, Coblong, Bandung"
                     className={`w-full h-20 bg-white border rounded-xl p-3 text-sm focus:outline-none transition-all resize-none ${
                       errors.address ? 'border-rose-300 focus:ring-1 focus:ring-rose-500' : 'border-brand-beige focus:ring-1 focus:ring-brand-red'
                     }`}
@@ -514,7 +514,7 @@ export default function CheckoutForm({
           {/* Delivery Area Warning for awareness */}
           {deliveryMethod === 'Pesan Antar' && (
             <div className="bg-brand-cream border border-brand-beige rounded-2xl p-3 text-[10px] leading-normal text-stone-500">
-              <span className="font-bold text-stone-700 block mb-0.5">Catatan Antar:</span>
+              <span className="font-bold text-stone-700 block mb-0.5">⚠️ Catatan Antar:</span>
               Warung Ratih hanya mengirimkan seblak dan pesanan khusus area sekitar warung (maksimal radius 5 km).
             </div>
           )}
@@ -526,4 +526,3 @@ export default function CheckoutForm({
     </div>
   );
 }
-

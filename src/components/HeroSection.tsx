@@ -1,165 +1,241 @@
 import React from 'react';
-import { Play, MessageCircle, Zap, Coins, Store, Truck, CreditCard } from 'lucide-react';
-import { motion } from 'motion/react';
-import { STORE_INFO } from '../data';
-import { HomeFeaturedItem } from '../types';
 import {
-  warungSeblakBackgroundImage,
-} from '../assets';
+  ArrowRight,
+  Bike,
+  Flame,
+  List,
+  Rocket,
+  ShoppingBag,
+  Star,
+  Store,
+  Tag,
+  Timer,
+  Users,
+} from 'lucide-react';
+import { motion } from '../lib/motion';
+import { HeroContent, Product } from '../types';
 
 interface HeroSectionProps {
-  homeFeaturedItems: HomeFeaturedItem[];
+  heroContent: HeroContent;
+  featuredProducts: Product[];
   onLihatMenu: () => void;
   onPesanSekarang: () => void;
 }
 
-export default function HeroSection({ homeFeaturedItems, onLihatMenu, onPesanSekarang }: HeroSectionProps) {
-  const highlights = [
-    { icon: Zap, text: 'Pesanan cepat diproses', color: 'text-amber-500 bg-amber-50' },
-    { icon: Coins, text: 'Harga terjangkau', color: 'text-emerald-500 bg-emerald-50' },
-    { icon: Store, text: 'Bisa ambil di tempat', color: 'text-blue-500 bg-blue-50' },
-    { icon: Truck, text: 'Bisa pesan antar sesuai area', color: 'text-indigo-500 bg-indigo-50' },
-    { icon: CreditCard, text: 'Pembayaran tunai atau transfer', color: 'text-brand-orange bg-orange-50' },
-  ];
+const statIconMap = {
+  star: Star,
+  timer: Timer,
+  users: Users,
+} as const;
 
+const featureIconMap = {
+  rocket: Rocket,
+  badge: Tag,
+  store: Store,
+  bike: Bike,
+} as const;
+
+const currency = (value: number) => `Rp${value.toLocaleString('id-ID')}`;
+
+export default function HeroSection({
+  heroContent,
+  featuredProducts,
+  onLihatMenu,
+  onPesanSekarang,
+}: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden py-8 sm:py-16 bg-gradient-to-b from-brand-cream/60 via-white to-white">
-      <div className="absolute inset-0 -z-10 opacity-[0.06] mix-blend-multiply pointer-events-none select-none">
-        <img
-          src={warungSeblakBackgroundImage}
-          alt="Warung Seblak Backdrop"
-          className="w-full h-full object-cover object-center"
-          referrerPolicy="no-referrer"
-        />
-      </div>
+    <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,109,59,0.12),_transparent_45%),linear-gradient(180deg,_#fffaf5_0%,_#fff_45%,_#fffaf7_100%)] py-6 sm:py-10">
+      <div className="absolute inset-x-0 top-0 -z-10 h-56 bg-gradient-to-b from-brand-orange/10 to-transparent" />
 
-      <div className="absolute top-0 right-0 w-80 h-80 bg-brand-orange/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-red/5 rounded-full blur-3xl -z-10" />
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/95 p-4 shadow-[0_24px_80px_rgba(71,33,13,0.12)] sm:p-6 lg:p-8"
+        >
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="space-y-5">
+              <div className="flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-red to-orange-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-orange-200/70 sm:px-5">
+                  <Flame className="h-4 w-4 fill-current" />
+                  {heroContent.eyebrow}
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-amber-200/70 sm:px-5">
+                  <Star className="h-4 w-4 fill-current" />
+                  {heroContent.priceBadge}
+                </span>
+              </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2"
-            >
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-red/10 border border-brand-red/20 text-brand-red rounded-full text-xs font-semibold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 bg-brand-red rounded-full animate-ping" />
-                Warung Kuliner Modern Tasikmalaya
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-orange/10 border border-brand-orange/20 text-brand-orange rounded-full text-xs font-bold uppercase tracking-wider">
-                Seblak Mulai 10 Ribuan
-              </span>
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-stone-950"
-              id="hero-title"
-            >
-              Lagi Lapar? Pesan Favoritmu di <span className="text-brand-red relative inline-block">Warung Ratih<span className="absolute bottom-1 left-0 w-full h-2 bg-brand-orange/20 -z-10 rounded-sm" /></span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-stone-600 text-sm sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed"
-              id="hero-description"
-            >
-              Nikmati seblak pedas, snack, kopi, minuman, dan kebutuhan warung lainnya. Pesan langsung dari HP, praktis tanpa antre.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2"
-              id="hero-ctas"
-            >
-              <button
-                onClick={onPesanSekarang}
-                className="w-full sm:w-auto bg-brand-red hover:bg-red-700 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-brand-red/20 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 group"
-              >
-                <span>Pesan Sekarang</span>
-                <Play className="w-4 h-4 fill-current group-hover:translate-x-0.5 transition-transform" />
-              </button>
-
-              <button
-                onClick={onLihatMenu}
-                className="w-full sm:w-auto bg-white border border-brand-beige hover:border-brand-red hover:bg-brand-cream text-stone-800 hover:text-brand-red font-semibold px-8 py-3.5 rounded-2xl transition-all cursor-pointer flex items-center justify-center"
-              >
-                Lihat Menu
-              </button>
-
-              <a
-                href={`https://wa.me/${STORE_INFO.phone}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-whatsapp hover:bg-emerald-600 text-white font-semibold px-6 py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-              >
-                <MessageCircle className="w-4.5 h-4.5 fill-current" />
-                <span>Chat WhatsApp</span>
-              </a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-6 text-left border-t border-brand-beige"
-            >
-              {highlights.map((h, idx) => {
-                const Icon = h.icon;
-                return (
-                  <div key={idx} className="flex items-start gap-2.5 p-2 rounded-xl bg-brand-cream/60 hover:bg-white hover:shadow-xs transition-all border border-transparent hover:border-brand-beige">
-                    <div className={`p-1.5 rounded-lg shrink-0 ${h.color}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-[11px] font-medium text-stone-700 leading-tight">
-                      {h.text}
-                    </span>
-                  </div>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7 }}
-            className="lg:col-span-5 relative"
-          >
-            <div className="grid grid-cols-2 gap-3.5 sm:gap-4 aspect-square max-w-[450px] mx-auto lg:max-w-none">
-              {homeFeaturedItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative group rounded-3xl overflow-hidden shadow-md border-2 border-white hover:shadow-xl transition-all duration-300"
+              <div className="space-y-4">
+                <h2
+                  id="hero-title"
+                  className="max-w-xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-stone-900 sm:text-5xl lg:text-[4.2rem]"
                 >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover transform group-hover:scale-108 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                  <span className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md text-[10px] sm:text-xs font-bold text-stone-900 px-2.5 py-1 rounded-xl shadow-xs">
-                    {item.title}
+                  {heroContent.titleLead}{' '}
+                  <span className="bg-gradient-to-r from-brand-red via-orange-500 to-orange-400 bg-clip-text text-transparent">
+                    {heroContent.titleAccent}
                   </span>
-                </div>
-              ))}
+                </h2>
+                <p
+                  id="hero-description"
+                  className="max-w-xl text-base leading-8 text-stone-600 sm:text-lg"
+                >
+                  {heroContent.description}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button
+                  onClick={onPesanSekarang}
+                  className="inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-brand-red to-orange-500 px-6 py-4 text-sm font-bold text-white shadow-xl shadow-orange-200/70 transition-transform hover:-translate-y-0.5 cursor-pointer"
+                >
+                  <ShoppingBag className="h-5 w-5" />
+                  <span>{heroContent.primaryCtaLabel}</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={onLihatMenu}
+                  className="inline-flex items-center justify-center gap-3 rounded-2xl border border-orange-200 bg-white px-6 py-4 text-sm font-bold text-brand-orange shadow-sm transition-transform hover:-translate-y-0.5 hover:border-orange-300 cursor-pointer"
+                >
+                  <List className="h-5 w-5" />
+                  <span>{heroContent.secondaryCtaLabel}</span>
+                  <ArrowRight className="h-5 w-5" />
+                </button>
+              </div>
             </div>
 
-            <div className="absolute -bottom-4 -right-4 w-14 h-14 bg-brand-orange text-white rounded-full flex items-center justify-center font-display font-bold text-xs shadow-lg rotate-12 z-10 animate-bounce">
-              PROMO!
+            <div className="relative">
+              <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-tr from-brand-red/10 via-transparent to-amber-200/30 blur-2xl" />
+              <div className="relative overflow-hidden rounded-[2rem] bg-stone-100 shadow-[0_32px_70px_rgba(126,53,8,0.20)]">
+                <img
+                  src={heroContent.backgroundImage}
+                  alt="Latar hero Warung Ratih"
+                  className="absolute inset-0 h-full w-full object-cover opacity-30"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/10 to-transparent" />
+                <img
+                  src={heroContent.heroImage}
+                  alt="Menu utama Warung Ratih"
+                  className="relative z-10 ml-auto aspect-[4/4.3] w-full max-w-[42rem] object-cover object-center"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.08 }}
+          className="rounded-[1.8rem] border border-white/80 bg-white/95 p-4 shadow-[0_20px_60px_rgba(71,33,13,0.10)] sm:p-5"
+        >
+          <div className="grid gap-4 lg:grid-cols-[1.4fr_0.8fr]">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-red">
+                    Menu Favorit
+                  </p>
+                  <h3 className="font-display text-2xl font-extrabold text-stone-900">
+                    Pilihan cepat untuk pelanggan Warung Ratih
+                  </h3>
+                </div>
+                <button
+                  onClick={onLihatMenu}
+                  className="hidden items-center gap-1 text-sm font-semibold text-brand-orange transition-colors hover:text-brand-red sm:inline-flex cursor-pointer"
+                >
+                  Lihat semua
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {featuredProducts.map((product) => (
+                  <article
+                    key={product.id}
+                    className="overflow-hidden rounded-[1.5rem] border border-orange-100 bg-white shadow-sm"
+                  >
+                    <div className="relative h-40 overflow-hidden">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      {product.isBestSeller && (
+                        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-1 text-[10px] font-bold text-brand-red shadow-sm">
+                          <Flame className="h-3.5 w-3.5 fill-current" />
+                          Favorit
+                        </span>
+                      )}
+                    </div>
+                    <div className="space-y-2 p-4">
+                      <div>
+                        <h4 className="text-lg font-bold text-stone-900">{product.name}</h4>
+                        <p className="line-clamp-2 text-sm text-stone-500">{product.description}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xl font-extrabold text-brand-red">
+                          {currency(product.price)}
+                        </span>
+                        <button
+                          onClick={onPesanSekarang}
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-orange-400 to-brand-orange text-white shadow-md transition-transform hover:scale-105 cursor-pointer"
+                          aria-label={`Pesan ${product.name}`}
+                        >
+                          <ArrowRight className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <div className="grid gap-3 rounded-[1.5rem] bg-gradient-to-r from-white to-orange-50 p-4 shadow-inner sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {heroContent.stats.map((stat) => {
+                  const Icon = statIconMap[stat.icon];
+                  return (
+                    <div
+                      key={stat.id}
+                      className="flex items-center gap-3 rounded-2xl border border-white bg-white/90 px-4 py-3 shadow-sm"
+                    >
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-50 text-brand-orange">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="text-xl font-extrabold text-stone-900">{stat.value}</p>
+                        <p className="text-sm text-stone-500">{stat.label}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="grid gap-3 rounded-[1.5rem] border border-orange-100 bg-white p-4 sm:grid-cols-2">
+                {heroContent.features.map((feature) => {
+                  const Icon = featureIconMap[feature.icon];
+                  return (
+                    <div
+                      key={feature.id}
+                      className="rounded-2xl border border-stone-100 bg-gradient-to-b from-white to-orange-50/40 p-4"
+                    >
+                      <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-50 text-brand-orange">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h4 className="text-base font-bold text-stone-900">{feature.title}</h4>
+                      <p className="text-sm text-stone-500">{feature.subtitle}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

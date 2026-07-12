@@ -1,43 +1,20 @@
-# Warung Ratih
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-Website katalog dan pemesanan online untuk Warung Ratih. Pengunjung dapat melihat menu seblak, snack, kopi, minuman, memilih variasi pesanan, melakukan checkout, lalu mengirim invoice langsung ke WhatsApp admin untuk konfirmasi.
+# Run and deploy your AI Studio app
 
-## Fitur Utama
+This contains everything you need to run your app locally.
 
-- Katalog menu responsif untuk desktop dan mobile
-- Filter kategori menu, promo, FAQ, dan informasi warung
-- Checkout dengan pilihan ambil sendiri atau pesan antar
-- Invoice pesanan yang siap dikirim ke WhatsApp
-- Proteksi usia untuk produk 18+
-- SEO dasar, metadata sosial, schema bisnis lokal, dan aset indeksasi
+View your app in AI Studio: https://ai.studio/apps/45e165d6-5bb0-4aa6-af80-63fba122b370
 
-## Teknologi
+## Run Locally
 
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS v4
-- Lucide React
-- Motion
+**Prerequisites:**  Node.js
 
-## Menjalankan Secara Lokal
 
-1. Install dependency:
+1. Install dependencies:
    `npm install`
-2. Salin nilai yang dibutuhkan dari `.env.example`
-3. Jalankan mode development:
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
    `npm run dev`
-4. Build produksi:
-   `npm run build`
-5. Validasi TypeScript:
-   `npm run lint`
-
-## Environment
-
-- `VITE_WHATSAPP_NUMBER` untuk nomor admin tujuan invoice
-- `VITE_SITE_URL` untuk canonical URL dan sitemap produksi
-- `VITE_ENABLE_ADMIN_PANEL` opsional, default `false`
-
-## Catatan Deploy
-
-Deploy direkomendasikan ke Vercel. Setelah domain aktif, set `VITE_SITE_URL` ke URL produksi agar canonical, Open Graph, dan sitemap mengarah ke domain final.

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Home, Utensils, Star, ShoppingBag, PhoneCall } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from '../lib/motion';
 
 interface MobileBottomNavigationProps {
   activeTab: string;

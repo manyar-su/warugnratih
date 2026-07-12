@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutGrid, Flame, Cookie, Coffee, CupSoda, Percent, ShieldAlert } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion } from '../lib/motion';
 
 interface CategoryTabsProps {
   selectedCategory: string;

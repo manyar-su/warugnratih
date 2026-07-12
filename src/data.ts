@@ -1,21 +1,8 @@
-import { HomeFeaturedItem, Product, Topping, PromoPackage } from './types';
 import {
-  basrengPedasImage,
-  djarum76Image,
-  djarumCoklatImage,
-  djarumSuperImage,
-  djiSamSoeImage,
-  djiSamSoeSilverImage,
-  esKopiSusuImage,
-  kwetiauPangsitImage,
-  magnumFilterImage,
-  marlboroRedImage,
-  nutrisariJerukImage,
-  pisangKejuImage,
-  seblakKomplitImage,
-  seblakRatihImage,
-  tahuCrispyImage,
+  heroBackgroundImage,
+  heroMainBowlImage,
 } from './assets';
+import { HeroContent, Product, PromoPackage, Topping } from './types';
 
 export const SEBLAK_TOPPINGS: Topping[] = [
   { id: 't_ceker', name: 'Ceker', price: 4000 },
@@ -45,6 +32,29 @@ export const COFFEE_SWEETNESS = [
   'Tambah gula'
 ];
 
+export const HERO_CONTENT_DEFAULTS: HeroContent = {
+  eyebrow: 'Kuliner modern Tasikmalaya',
+  priceBadge: 'Mulai 10RB',
+  titleLead: 'Lagi lapar? Pesan favoritmu di',
+  titleAccent: 'Warung Ratih',
+  description: 'Nikmati seblak pedas, snack, kopi, minuman, dan kebutuhan warung lainnya. Pesan langsung dari HP, praktis tanpa antre.',
+  primaryCtaLabel: 'Pesan Sekarang',
+  secondaryCtaLabel: 'Lihat Menu',
+  heroImage: heroMainBowlImage,
+  backgroundImage: heroBackgroundImage,
+  stats: [
+    { id: 'rating', value: '4.9', label: 'Rating toko', icon: 'star' },
+    { id: 'eta', value: '15-25 mnt', label: 'Estimasi waktu', icon: 'timer' },
+    { id: 'orders', value: '500+', label: 'Pesanan', icon: 'users' },
+  ],
+  features: [
+    { id: 'fast', title: 'Pesanan cepat', subtitle: 'Langsung diproses', icon: 'rocket' },
+    { id: 'value', title: 'Harga terjangkau', subtitle: 'Ramah di kantong', icon: 'badge' },
+    { id: 'pickup', title: 'Ambil di tempat', subtitle: 'Hemat waktu', icon: 'store' },
+    { id: 'delivery', title: 'Bisa diantar', subtitle: 'Sesuai area', icon: 'bike' },
+  ],
+};
+
 export const INITIAL_PRODUCTS: Product[] = [
   // --- SEBLAK ---
   {
@@ -53,7 +63,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Seblak kuah gurih pedas khas Ratih dengan kerupuk basah lembut, telur orak-arik, mie, dan bumbu kencur yang harum meresap.',
     price: 10000,
     category: 'Seblak',
-    image: seblakRatihImage,
+    image: '/src/assets/images/seblak_ratih_1783694728635.jpg',
     isAvailable: true,
     isBestSeller: true,
     options: {
@@ -111,7 +121,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Varian terlaris dan terlengkap! Perpaduan seblak dengan ceker empuk, tulang muda, sosis sapi, bakso, dumpling keju, telur, dan mie.',
     price: 25000,
     category: 'Seblak',
-    image: seblakKomplitImage,
+    image: '/src/assets/images/seblak_komplit_1783692147592.jpg',
     isAvailable: true,
     isBestSeller: true,
     layout: 'wide',
@@ -127,7 +137,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Kwetiau goreng kenyal dipadu pangsit rebus lembut berselimut bumbu pedas nampol dan gurih harum yang bikin nagih! Disajikan hangat.',
     price: 18000,
     category: 'Seblak',
-    image: kwetiauPangsitImage,
+    image: '/src/assets/images/kwetiau_pangsit_1783695763314.jpg',
     isAvailable: true,
     isBestSeller: true,
     layout: 'wide'
@@ -149,7 +159,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Baso goreng potong stik renyah dibalut bumbu cabe bubuk melimpah dan aroma segar irisan daun jeruk.',
     price: 7000,
     category: 'Snack',
-    image: basrengPedasImage,
+    image: '/src/assets/images/basreng_pedas_1783692162664.jpg',
     isAvailable: true,
     isBestSeller: true
   },
@@ -159,7 +169,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Tahu goreng super renyah dengan kremesan melimpah yang gurih di luar, lembut di dalam. Bikin nagih tiap gigitan!',
     price: 12000,
     category: 'Snack',
-    image: tahuCrispyImage,
+    image: '/src/assets/images/tahu_crispy_1783695741238.jpg',
     isAvailable: true,
     isBestSeller: true,
     layout: 'tall'
@@ -170,7 +180,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Pisang manis lembut yang dipanggang harum, disiram susu kental manis dan parutan keju cheddar yang sangat melimpah. Fresh dan hangat!',
     price: 15000,
     category: 'Snack',
-    image: pisangKejuImage,
+    image: '/src/assets/images/pisang_keju_1783695778085.jpg',
     isAvailable: true,
     isBestSeller: true,
     layout: 'wide'
@@ -219,7 +229,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok kretek legendaris Indonesia dengan cita rasa tembakau murni yang mantap dan harum khas. Khusus usia 18+.',
     price: 23000,
     category: 'Rokok',
-    image: djiSamSoeImage,
+    image: '/src/assets/images/dji_sam_soe_1783695157955.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -230,7 +240,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok kretek tradisional legendaris dengan ramuan cengkeh pilihan aromatik yang harum gurih. Khusus usia 18+.',
     price: 18000,
     category: 'Rokok',
-    image: djarum76Image,
+    image: '/src/assets/images/djarum_76_1783695173315.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -241,7 +251,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok kretek tanpa filter legendaris dengan cita rasa tembakau srintil dan klembak kemenyan pilihan. Khusus usia 18+.',
     price: 19000,
     category: 'Rokok',
-    image: djarumCoklatImage,
+    image: '/src/assets/images/djarum_coklat_1783695185047.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -252,7 +262,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Varian rokok kretek filter Dji Sam Soe dengan tarikan yang lebih halus namun tetap mantap. Khusus usia 18+.',
     price: 19000,
     category: 'Rokok',
-    image: djiSamSoeSilverImage,
+    image: '/src/assets/images/dji_sam_soe_silver_1783695198049.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -263,7 +273,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok kretek filter premium nomor satu dengan cita rasa saus rempah khas Djarum yang legendaris. Khusus usia 18+.',
     price: 28000,
     category: 'Rokok',
-    image: djarumSuperImage,
+    image: '/src/assets/images/djarum_super_1783695218958.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -274,7 +284,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok kretek filter dengan ukuran batang mantap, sensasi rasa gurih berkelas, dan aroma menggoda. Khusus usia 18+.',
     price: 29000,
     category: 'Rokok',
-    image: magnumFilterImage,
+    image: '/src/assets/images/magnum_filter_1783695231823.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -285,7 +295,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Rokok putih filter legendaris dunia dengan cita rasa tembakau virginia berkualitas tinggi yang tegas dan mantap. Khusus usia 18+.',
     price: 41000,
     category: 'Rokok',
-    image: marlboroRedImage,
+    image: '/src/assets/images/marlboro_red_1783695244198.jpg',
     isAvailable: true,
     hasAgeRestriction: true,
     options: { type: 'rokok' }
@@ -337,7 +347,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Espresso segar dipadukan dengan susu cair segar, krimer nabati, dan gula aren cair disajikan dingin.',
     price: 12000,
     category: 'Kopi',
-    image: esKopiSusuImage,
+    image: '/src/assets/images/es_kopi_susu_1783692179651.jpg',
     isAvailable: true,
     isBestSeller: true,
     options: {
@@ -394,7 +404,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Minuman buah jeruk segar instan Nutrisari yang manis dan asam segar, disajikan dengan es batu dingin.',
     price: 5000,
     category: 'Minuman',
-    image: nutrisariJerukImage,
+    image: '/src/assets/images/nutrisari_jeruk_1783694747900.jpg',
     isAvailable: true,
     isBestSeller: true
   },
@@ -425,7 +435,7 @@ export const PROMO_PACKAGES: PromoPackage[] = [
     description: 'Paket kenyang juara! Seblak Komplit dengan aneka topping melimpah bersanding dengan Es Kopi Susu Creamy yang nikmat.',
     price: 33000,
     originalPrice: 37000,
-    image: seblakKomplitImage,
+    image: '/src/assets/images/seblak_komplit_1783692147592.jpg',
     items: ['Seblak Komplit', 'Es Kopi Susu Creamy']
   },
   {
@@ -434,35 +444,8 @@ export const PROMO_PACKAGES: PromoPackage[] = [
     description: 'Sempurna untuk kumpul santai bareng teman! 2 Porsi Basreng Pedas + 2 Gelas Kopi Susu Tradisional.',
     price: 24000,
     originalPrice: 28000,
-    image: basrengPedasImage,
+    image: '/src/assets/images/basreng_pedas_1783692162664.jpg',
     items: ['2x Basreng Pedas', '2x Kopi Susu Tradisional']
-  }
-];
-
-export const HOME_FEATURED_DEFAULTS: HomeFeaturedItem[] = [
-  {
-    id: 'home_featured_1',
-    title: 'Seblak Ratih',
-    image: seblakRatihImage,
-    linkedProductId: 'p_seblak_ori',
-  },
-  {
-    id: 'home_featured_2',
-    title: 'Tahu Crispy',
-    image: tahuCrispyImage,
-    linkedProductId: 'p_snack_tahu_crispy',
-  },
-  {
-    id: 'home_featured_3',
-    title: 'Kwetiau Pangsit',
-    image: kwetiauPangsitImage,
-    linkedProductId: 'p_makanan_kwetiau_pangsit',
-  },
-  {
-    id: 'home_featured_4',
-    title: 'Pisang Keju',
-    image: pisangKejuImage,
-    linkedProductId: 'p_snack_pisang_keju',
   }
 ];
 
@@ -511,17 +494,10 @@ export const FAQ_ITEMS = [
 
 export const STORE_INFO = {
   name: 'Warung Ratih',
-  phone: '6281932018669',
-  streetAddress: 'Karisma Residence, Blok C.xx, RT.008/RW.003, Margajaya, Kec. Mangunreja',
-  locality: 'Kabupaten Tasikmalaya',
-  region: 'Jawa Barat',
-  postalCode: '46462',
-  address:
-    'Karisma Residence, Blok C.xx, RT.008/RW.003, Margajaya, Kec. Mangunreja, Kabupaten Tasikmalaya, Jawa Barat 46462',
-  hours: 'Senin-Minggu, 08.00-22.00 WIB',
+  phone: '6281932018669', // Default WhatsApp number (can be replaced with process.env.NEXT_PUBLIC_WHATSAPP_NUMBER if configured)
+  address: 'Karisma Residence, Blok C.xx , RT./008/RW.003, Margajaya, Kec. Mangunreja, Kabupaten Tasikmalaya, Jawa Barat 46462',
+  hours: 'Senin–Minggu, 08.00–22.00 WIB',
   googleMapsUrl: 'https://maps.google.com/?q=Karisma+Residence+Mangunreja+Tasikmalaya',
-  mapEmbedUrl:
-    'https://maps.google.com/maps?q=Karisma%20Residence%20Mangunreja%20Tasikmalaya&t=&z=15&ie=UTF8&iwloc=&output=embed',
   deliveryAreas: [
     { name: 'Sangat Dekat (0 - 1 km)', fee: 3000 },
     { name: 'Area Dekat (1 - 2 km)', fee: 5000 },

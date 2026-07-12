@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { FAQ_ITEMS } from '../data';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '../lib/motion';
 
 export default function FAQSection() {
   const [openId, setOpenId] = useState<string | null>(null);

@@ -1,15 +1,18 @@
 import React from 'react';
-import { Star, Percent, Plus } from 'lucide-react';
+import { Star, Percent, Plus, Trash2 } from 'lucide-react';
 import { PromoPackage } from '../types';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from '../lib/motion';
 
 interface PromoCardProps {
   key?: React.Key;
   promo: PromoPackage;
   onAddPromoToCart: (promo: PromoPackage) => void;
+  onDelete?: (promoId: string) => void;
 }
 
-export default function PromoCard({ promo, onAddPromoToCart }: PromoCardProps) {
+export default function PromoCard({ promo, onAddPromoToCart, onDelete }: PromoCardProps) {
+  const [showConfirmDelete, setShowConfirmDelete] = React.useState(false);
+
   const formatRupiah = (num: number) => {
     return 'Rp' + num.toLocaleString('id-ID');
   };
@@ -26,6 +29,81 @@ export default function PromoCard({ promo, onAddPromoToCart }: PromoCardProps) {
       className="bg-white rounded-3xl border border-brand-beige hover:border-brand-orange/45 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col h-full relative"
       id={`promo-card-${promo.id}`}
     >
+      {/* Delete Promo Button */}
+      {onDelete && (
+        <div className="absolute top-3 left-3 z-15">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              let confirmed = false;
+              try {
+                confirmed = window.confirm(`Yakin ingin menghapus promo ${promo.name}?`);
+              } catch {
+                confirmed = true;
+              }
+              if (confirmed) {
+                onDelete(promo.id);
+              } else {
+                // Fallback custom confirm dialog inside the card
+                setShowConfirmDelete(true);
+              }
+            }}
+            className="p-1.5 bg-white/90 hover:bg-rose-50 text-brand-red border border-rose-100 hover:text-rose-700 hover:scale-105 rounded-xl shadow-md transition-all cursor-pointer"
+            title="Hapus Promo"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Fallback Custom Confirmation Overlay */}
+      <AnimatePresence>
+        {showConfirmDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-stone-950/80 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center z-30"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 10 }}
+              className="space-y-4"
+            >
+              <div className="mx-auto w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center border border-rose-500/20 text-rose-400">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-display font-extrabold text-sm text-white">
+                  Hapus Promo Ini?
+                </h4>
+                <p className="text-stone-300 text-[10px] max-w-[180px] mx-auto mt-1 leading-relaxed">
+                  Apakah Anda yakin ingin menghapus promo <strong className="text-white font-semibold">{promo.name}</strong>?
+                </p>
+              </div>
+              <div className="flex gap-2 justify-center pt-1">
+                <button
+                  onClick={() => setShowConfirmDelete(false)}
+                  className="px-3.5 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-[10px] rounded-lg transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={() => {
+                    if (onDelete) onDelete(promo.id);
+                    setShowConfirmDelete(false);
+                  }}
+                  className="px-3.5 py-1.5 bg-brand-red hover:bg-red-700 text-white font-bold text-[10px] rounded-lg transition-colors cursor-pointer"
+                >
+                  Ya, Hapus
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Discount Badge */}
       <div className="absolute top-3 right-3 z-10">
         <span className="inline-flex items-center gap-1 bg-brand-red text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm animate-bounce">
@@ -34,7 +112,10 @@ export default function PromoCard({ promo, onAddPromoToCart }: PromoCardProps) {
       </div>
 
       {/* Thumbnail */}
-      <div className="relative aspect-16/10 overflow-hidden bg-stone-50 shrink-0">
+      <div 
+        onClick={() => onAddPromoToCart(promo)}
+        className="relative aspect-16/10 overflow-hidden bg-stone-50 shrink-0 cursor-pointer hover:brightness-95 transition-all duration-300"
+      >
         <img
           src={promo.image}
           alt={promo.name}

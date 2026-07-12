@@ -47,13 +47,6 @@ export interface PromoPackage {
   items: string[];
 }
 
-export interface HomeFeaturedItem {
-  id: string;
-  title: string;
-  image: string;
-  linkedProductId?: string;
-}
-
 export interface Order {
   id: string;
   date: string;
@@ -71,4 +64,32 @@ export interface Order {
   total: number;
   status: 'Menunggu Konfirmasi' | 'Pesanan Diterima' | 'Sedang Dibuat' | 'Siap Diambil' | 'Sedang Diantar' | 'Selesai' | 'Dibatalkan';
   notes?: string;
+}
+
+export interface HeroStat {
+  id: string;
+  value: string;
+  label: string;
+  icon: 'star' | 'timer' | 'users';
+}
+
+export interface HeroFeature {
+  id: string;
+  title: string;
+  subtitle: string;
+  icon: 'rocket' | 'badge' | 'store' | 'bike';
+}
+
+export interface HeroContent {
+  eyebrow: string;
+  priceBadge: string;
+  titleLead: string;
+  titleAccent: string;
+  description: string;
+  primaryCtaLabel: string;
+  secondaryCtaLabel: string;
+  heroImage: string;
+  backgroundImage: string;
+  stats: HeroStat[];
+  features: HeroFeature[];
 }

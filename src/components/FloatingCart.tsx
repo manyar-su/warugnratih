@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShoppingBag } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '../lib/motion';
 
 interface FloatingCartProps {
   cartCount: number;

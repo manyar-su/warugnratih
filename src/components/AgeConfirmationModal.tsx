@@ -1,6 +1,6 @@
 import React from 'react';
 import { ShieldAlert, Check, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '../lib/motion';
 
 interface AgeConfirmationModalProps {
   isOpen: boolean;

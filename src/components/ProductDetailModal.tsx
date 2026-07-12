@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Flame, Star, Plus, Minus, MessageSquare, ShoppingBag } from 'lucide-react';
 import { Product, Topping, CartItem } from '../types';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '../lib/motion';
 
 interface ProductDetailModalProps {
   product: Product | null;

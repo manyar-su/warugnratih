@@ -1,6 +1,6 @@
 {
   "name": "Warung Ratih",
-  "description": "Website pemesanan online Warung Ratih untuk seblak, snack, kopi, minuman, dan konfirmasi pesanan melalui WhatsApp.",
+  "description": "Pesan seblak, snack, rokok, kopi, dan minuman dari Warung Ratih. Pilih menu, checkout, dan kirim pesanan langsung melalui WhatsApp.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

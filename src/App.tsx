@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from './lib/motion';
 import { ShoppingBag, ChevronRight, Phone, AlertTriangle, ShieldCheck } from 'lucide-react';
 
 // Types
-import { Product, CartItem, HomeFeaturedItem, Order, PromoPackage } from './types';
+import { HeroContent, Product, CartItem, Order, PromoPackage } from './types';
 
 // Data
-import { HOME_FEATURED_DEFAULTS, INITIAL_PRODUCTS, PROMO_PACKAGES, STORE_INFO } from './data';
+import { HERO_CONTENT_DEFAULTS, INITIAL_PRODUCTS, PROMO_PACKAGES, STORE_INFO } from './data';
 
 // Reusable Components
 import Navbar from './components/Navbar';
@@ -25,12 +25,8 @@ import StoreInformation from './components/StoreInformation';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
 import AdminPanel from './components/AdminPanel';
-import SeoHead from './components/SeoHead';
 
 export default function App() {
-  const isAdminEnabled =
-    ((import.meta as ImportMeta & { env: Record<string, string | undefined> }).env.VITE_ENABLE_ADMIN_PANEL ?? 'true') !==
-    'false';
   // --- CORE STATE ---
   // Load products from localStorage or default to INITIAL_PRODUCTS
   const [products, setProducts] = useState<Product[]>(() => {
@@ -62,12 +58,12 @@ export default function App() {
     }
   });
 
-  const [homeFeaturedItems, setHomeFeaturedItems] = useState<HomeFeaturedItem[]>(() => {
+  const [heroContent, setHeroContent] = useState<HeroContent>(() => {
     try {
-      const saved = localStorage.getItem('wr_home_featured');
-      return saved ? JSON.parse(saved) : HOME_FEATURED_DEFAULTS;
+      const saved = localStorage.getItem('wr_hero_content');
+      return saved ? { ...HERO_CONTENT_DEFAULTS, ...JSON.parse(saved) } : HERO_CONTENT_DEFAULTS;
     } catch {
-      return HOME_FEATURED_DEFAULTS;
+      return HERO_CONTENT_DEFAULTS;
     }
   });
 
@@ -140,11 +136,11 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('wr_home_featured', JSON.stringify(homeFeaturedItems));
+      localStorage.setItem('wr_hero_content', JSON.stringify(heroContent));
     } catch (e) {
-      console.warn('Failed to sync home featured items with localStorage:', e);
+      console.warn('Failed to sync heroContent with localStorage:', e);
     }
-  }, [homeFeaturedItems]);
+  }, [heroContent]);
 
   // Handle Hash/URL routing trigger
   useEffect(() => {
@@ -166,7 +162,7 @@ export default function App() {
       } else if (hash === '#/menu') {
         setActiveTab('menu');
         setCurrentView('catalog');
-      } else if (hash === '#/admin' && isAdminEnabled) {
+      } else if (hash === '#/admin') {
         setIsAdminOpen(true);
       } else {
         // Default home
@@ -181,7 +177,7 @@ export default function App() {
     handleHashRoute(); // Run initial compile on mount
     
     return () => window.removeEventListener('hashchange', handleHashRoute);
-  }, [currentOrder, isAdminEnabled]);
+  }, [currentOrder]);
 
   // Adjust URL Hash visually based on states
   const setURLRoute = (route: string) => {
@@ -399,15 +395,15 @@ export default function App() {
     setPromos(promos.filter((p) => p.id !== promoId));
   };
 
+  const handleAdminAddPromo = (newPromo: PromoPackage) => {
+    setPromos([newPromo, ...promos]);
+  };
+
   const handleAdminUpdateOrderStatus = (orderId: string, status: Order['status']) => {
     setOrders(orders.map((o) => (o.id === orderId ? { ...o, status } : o)));
     if (currentOrder && currentOrder.id === orderId) {
       setCurrentOrder({ ...currentOrder, status });
     }
-  };
-
-  const handleUpdateHomeFeaturedItems = (items: HomeFeaturedItem[]) => {
-    setHomeFeaturedItems(items);
   };
 
   // --- DYNAMIC CATALOG FILTER ---
@@ -419,16 +415,20 @@ export default function App() {
     return prod.category === selectedCategory;
   });
 
+  const heroFeaturedProducts = products
+    .filter((product) => product.category !== 'Rokok')
+    .sort((a, b) => Number(Boolean(b.isBestSeller)) - Number(Boolean(a.isBestSeller)))
+    .slice(0, 4);
+
   return (
     <div className="min-h-screen bg-brand-cream pb-16 md:pb-0 font-sans antialiased text-brand-text">
-      <SeoHead activeTab={activeTab} currentView={currentView} />
       {/* Navbar Header banner */}
       <Navbar
         cartCount={cartCount}
         onCartClick={() => setIsCartOpen(true)}
         activeTab={activeTab}
         setActiveTab={handleTabChange}
-        onOpenAdmin={isAdminEnabled ? () => setIsAdminOpen(true) : undefined}
+        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
       {/* VIEW ORCHESTRATOR */}
@@ -441,7 +441,8 @@ export default function App() {
             {/* 1. Landing Hero (Show only when active tab is Beranda) */}
             {activeTab === 'beranda' && (
               <HeroSection
-                homeFeaturedItems={homeFeaturedItems}
+                heroContent={heroContent}
+                featuredProducts={heroFeaturedProducts}
                 onLihatMenu={() => handleTabChange('menu')}
                 onPesanSekarang={() => handleTabChange('menu')}
               />
@@ -481,6 +482,7 @@ export default function App() {
                         key={promo.id}
                         promo={promo}
                         onAddPromoToCart={handleAddPromoToCart}
+                        onDelete={handleAdminDeletePromo}
                       />
                     ))
                   )}
@@ -633,18 +635,19 @@ export default function App() {
       />
 
       {/* 4. Backdoor local administrative sandbox console */}
-      {isAdminEnabled && isAdminOpen && (
+      {isAdminOpen && (
         <AdminPanel
+          heroContent={heroContent}
           products={products}
           orders={orders}
           promos={promos}
-          homeFeaturedItems={homeFeaturedItems}
+          onUpdateHeroContent={setHeroContent}
           onAddProduct={handleAdminAddProduct}
           onUpdateProduct={handleAdminUpdateProduct}
           onDeleteProduct={handleAdminDeleteProduct}
           onDeletePromo={handleAdminDeletePromo}
+          onAddPromo={handleAdminAddPromo}
           onUpdateOrderStatus={handleAdminUpdateOrderStatus}
-          onUpdateHomeFeaturedItems={handleUpdateHomeFeaturedItems}
           onClose={() => setIsAdminOpen(false)}
         />
       )}

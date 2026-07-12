@@ -118,7 +118,7 @@ export default function StoreInformation() {
               {/* Actual Google Maps embed or visual mockup card */}
               <iframe
                 title="Peta Lokasi Warung Ratih"
-                src={STORE_INFO.mapEmbedUrl}
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15843.515904809228!2d107.61868350000001!3d-6.893111249999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64b85c1979d%3A0x86bb11db4237f374!2sCoblong%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1720612345678!5m2!1sen!2sid"
                 className="w-full h-full border-0 rounded-2xl grayscale hover:grayscale-0 transition-all duration-700"
                 allowFullScreen={false}
                 loading="lazy"
@@ -126,7 +126,7 @@ export default function StoreInformation() {
               />
               <div className="absolute top-5 right-5 bg-white/95 backdrop-blur-xs px-2.5 py-1.5 rounded-lg border border-brand-beige shadow-sm flex items-center gap-1 pointer-events-none">
                 <span className="w-1.5 h-1.5 bg-brand-red rounded-full animate-ping" />
-                <span className="text-[10px] font-bold text-stone-800">Mangunreja, Tasikmalaya</span>
+                <span className="text-[10px] font-bold text-stone-800">Coblong, Bandung</span>
               </div>
             </div>
 

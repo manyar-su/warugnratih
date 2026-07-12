@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { CheckCircle, Copy, Printer, Share2, Send, ArrowLeft, Landmark, Check } from 'lucide-react';
 import { Order } from '../types';
 import { STORE_INFO } from '../data';
-import { motion } from 'motion/react';
+import { motion } from '../lib/motion';
 
 interface InvoiceCardProps {
   order: Order;
@@ -104,7 +104,8 @@ export default function InvoiceCard({ order, onBackToMenu }: InvoiceCardProps) {
     window.print();
   };
 
-  const whatsappNumber = (import.meta as any).env.VITE_WHATSAPP_NUMBER || 
+  const whatsappNumber = (import.meta as any).env.VITE_NEXT_PUBLIC_WHATSAPP_NUMBER || 
+                         (import.meta as any).env.VITE_WHATSAPP_NUMBER || 
                          STORE_INFO.phone;
 
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${generateWhatsAppMessage()}`;
