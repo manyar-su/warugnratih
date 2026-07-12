@@ -2,6 +2,7 @@ import React from 'react';
 import { ImagePlus, RotateCcw, Save, Type } from 'lucide-react';
 import { HERO_CONTENT_DEFAULTS } from '../data';
 import { HeroContent } from '../types';
+import ImageCropModal from './ImageCropModal';
 
 interface HeroSettingsPanelProps {
   value: HeroContent;
@@ -40,8 +41,30 @@ export default function HeroSettingsPanel({
   onSave,
   onReset,
 }: HeroSettingsPanelProps) {
+  const [cropImageSrc, setCropImageSrc] = React.useState<string | null>(null);
+  const [cropAspectRatio, setCropAspectRatio] = React.useState(16 / 9);
+  const [cropTarget, setCropTarget] = React.useState<'heroImage' | 'backgroundImage' | null>(null);
+
   const updateField = <K extends keyof HeroContent>(field: K, nextValue: HeroContent[K]) => {
     onChange({ ...value, [field]: nextValue });
+  };
+
+  const openCropUpload = (
+    file: File,
+    target: 'heroImage' | 'backgroundImage',
+    aspectRatio: number,
+  ) => {
+    readImageAsDataUrl(file, (result) => {
+      setCropTarget(target);
+      setCropAspectRatio(aspectRatio);
+      setCropImageSrc(result);
+    });
+  };
+
+  const handleApplyCrop = (croppedImage: string) => {
+    if (cropTarget) {
+      updateField(cropTarget, croppedImage);
+    }
   };
 
   const uploadButton = (
@@ -201,7 +224,7 @@ export default function HeroSettingsPanel({
                 />
                 <div className="flex flex-wrap gap-2">
                   {uploadButton('Upload Foto Utama', (file) =>
-                    readImageAsDataUrl(file, (result) => updateField('heroImage', result)),
+                    openCropUpload(file, 'heroImage', 4 / 3),
                   )}
                   <button
                     type="button"
@@ -223,7 +246,7 @@ export default function HeroSettingsPanel({
                 />
                 <div className="flex flex-wrap gap-2">
                   {uploadButton('Upload Latar', (file) =>
-                    readImageAsDataUrl(file, (result) => updateField('backgroundImage', result)),
+                    openCropUpload(file, 'backgroundImage', 16 / 9),
                   )}
                   <button
                     type="button"
@@ -247,6 +270,18 @@ export default function HeroSettingsPanel({
           </div>
         </div>
       </div>
+
+      <ImageCropModal
+        aspectRatio={cropAspectRatio}
+        imageSrc={cropImageSrc}
+        isOpen={Boolean(cropImageSrc)}
+        onApply={handleApplyCrop}
+        onClose={() => {
+          setCropImageSrc(null);
+          setCropTarget(null);
+        }}
+        title="Crop Gambar Hero"
+      />
     </div>
   );
 }

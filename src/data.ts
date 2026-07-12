@@ -1,6 +1,7 @@
 import {
   heroBackgroundImage,
   heroMainBowlImage,
+  MENU_ASSET_OPTIONS,
 } from './assets';
 import { HeroContent, Product, PromoPackage, Topping } from './types';
 
@@ -33,6 +34,19 @@ export const COFFEE_SWEETNESS = [
 ];
 
 const LOCAL_ASSET_IMAGE_PREFIX = '/src/assets/images/';
+const STATIC_MENU_ASSET_IMAGES = new Set(MENU_ASSET_OPTIONS.map((asset) => asset.src));
+
+const isAllowedImageSource = (image: string) => {
+  if (!image) return false;
+
+  return (
+    image.startsWith(LOCAL_ASSET_IMAGE_PREFIX) ||
+    STATIC_MENU_ASSET_IMAGES.has(image) ||
+    image.startsWith('data:image/') ||
+    image.startsWith('blob:') ||
+    /^https?:\/\//.test(image)
+  );
+};
 
 export const HERO_CONTENT_DEFAULTS: HeroContent = {
   eyebrow: 'Kuliner modern Tasikmalaya',
@@ -421,9 +435,7 @@ const ALL_PRODUCTS: Product[] = [
   }
 ];
 
-export const INITIAL_PRODUCTS: Product[] = ALL_PRODUCTS.filter((product) =>
-  product.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX),
-);
+export const INITIAL_PRODUCTS: Product[] = [];
 
 const ALL_PROMO_PACKAGES: PromoPackage[] = [
   {
@@ -455,15 +467,13 @@ const ALL_PROMO_PACKAGES: PromoPackage[] = [
   }
 ];
 
-export const PROMO_PACKAGES: PromoPackage[] = ALL_PROMO_PACKAGES.filter((promo) =>
-  promo.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX),
-);
+export const PROMO_PACKAGES: PromoPackage[] = [];
 
 export const sanitizeProducts = (products: Product[]): Product[] =>
-  products.filter((product) => product.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX));
+  products.filter((product) => isAllowedImageSource(product.image));
 
 export const sanitizePromos = (promos: PromoPackage[]): PromoPackage[] =>
-  promos.filter((promo) => promo.image.startsWith(LOCAL_ASSET_IMAGE_PREFIX));
+  promos.filter((promo) => isAllowedImageSource(promo.image));
 
 export const FAQ_ITEMS = [
   {

@@ -31,6 +31,9 @@ import PromoCard from './components/PromoCard';
 import StoreInformation from './components/StoreInformation';
 import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
+import AdminPanel from './components/AdminPanel';
+
+const CONTENT_SCHEMA_VERSION = '2026-07-12-empty-catalog';
 
 export default function App() {
   // --- CORE STATE ---
@@ -91,6 +94,7 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAgeModalOpen, setIsAgeModalOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   // Focus Item Pointer
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -146,6 +150,23 @@ export default function App() {
       console.warn('Failed to sync heroContent with localStorage:', e);
     }
   }, [heroContent]);
+
+  useEffect(() => {
+    try {
+      const currentVersion = localStorage.getItem('wr_content_schema_version');
+      if (currentVersion !== CONTENT_SCHEMA_VERSION) {
+        localStorage.setItem('wr_content_schema_version', CONTENT_SCHEMA_VERSION);
+        localStorage.setItem('wr_products', JSON.stringify(INITIAL_PRODUCTS));
+        localStorage.setItem('wr_promos', JSON.stringify(PROMO_PACKAGES));
+        localStorage.removeItem('wr_cart_items');
+        setProducts(INITIAL_PRODUCTS);
+        setPromos(PROMO_PACKAGES);
+        setCartItems([]);
+      }
+    } catch (e) {
+      console.warn('Failed to apply local content schema reset:', e);
+    }
+  }, []);
 
   // Handle Hash/URL routing trigger
   useEffect(() => {
@@ -291,6 +312,34 @@ export default function App() {
   const handleUpdateCartQty = (itemId: string, newQty: number) => {
     setCartItems(
       cartItems.map((item) => (item.id === itemId ? { ...item, quantity: newQty } : item))
+    );
+  };
+
+  const handleAddProduct = (product: Product) => {
+    setProducts((current) => [product, ...current]);
+  };
+
+  const handleUpdateProduct = (product: Product) => {
+    setProducts((current) =>
+      current.map((item) => (item.id === product.id ? product : item)),
+    );
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+    setProducts((current) => current.filter((item) => item.id !== productId));
+  };
+
+  const handleAddPromo = (promo: PromoPackage) => {
+    setPromos((current) => [promo, ...current]);
+  };
+
+  const handleDeletePromo = (promoId: string) => {
+    setPromos((current) => current.filter((item) => item.id !== promoId));
+  };
+
+  const handleUpdateOrderStatus = (orderId: string, status: Order['status']) => {
+    setOrders((current) =>
+      current.map((order) => (order.id === orderId ? { ...order, status } : order)),
     );
   };
 
@@ -556,6 +605,15 @@ export default function App() {
       <Footer />
 
       {/* --- FLOATING CONTROLS --- */}
+
+      <button
+        type="button"
+        onClick={() => setIsAdminOpen(true)}
+        className="fixed bottom-24 right-4 z-30 inline-flex items-center gap-2 rounded-full bg-stone-900 px-4 py-3 text-xs font-bold text-white shadow-lg transition-colors hover:bg-stone-800 md:bottom-6"
+      >
+        <ShieldCheck className="h-4 w-4" />
+        <span>Pengaturan</span>
+      </button>
       
       {/* 1. Mobile Bottom navigation rail (Strictly for portable viewports) */}
       <MobileBottomNavigation
@@ -606,6 +664,23 @@ export default function App() {
         }}
         onConfirm={handleAgeConfirmSuccess}
       />
+
+      {isAdminOpen && (
+        <AdminPanel
+          heroContent={heroContent}
+          products={products}
+          orders={orders}
+          promos={promos}
+          onUpdateHeroContent={setHeroContent}
+          onAddProduct={handleAddProduct}
+          onUpdateProduct={handleUpdateProduct}
+          onDeleteProduct={handleDeleteProduct}
+          onDeletePromo={handleDeletePromo}
+          onAddPromo={handleAddPromo}
+          onUpdateOrderStatus={handleUpdateOrderStatus}
+          onClose={() => setIsAdminOpen(false)}
+        />
+      )}
 
     </div>
   );
